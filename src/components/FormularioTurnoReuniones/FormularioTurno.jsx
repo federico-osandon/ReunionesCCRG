@@ -11,39 +11,33 @@ import firebase from 'firebase/app'
 
 const Cartelito=({mensaje, show= false, setShow })=>{   
     
-    return (
-        <div
-            aria-live="polite"
-            aria-atomic="true"
+    return (          
+    
+        <Toast 
+            onClose={() => setShow(false)} 
+            show={show} 
+            delay={3000} 
+            autohide
             style={{
-                position: 'relative',
-                minHeight: '100px',
+                position: 'sticky',
+                top: 0,
+                right: 0,
+                backgroundColor: 'green',
+                zIndex: 1
             }}
-        >   
+        >
+            <Toast.Header>
+                <img
+                    src="holder.js/20x20?text=%20"
+                    className="rounded mr-2"
+                    alt=""
+                />
+                <strong className="mr-auto">CCIAdmin </strong>
+                {/* <small>11 mins ago</small> */}
+            </Toast.Header>
+            <Toast.Body>{mensaje}!</Toast.Body>
+        </Toast>          
         
-            <Toast 
-                onClose={() => setShow(false)} 
-                show={show} 
-                delay={3000} 
-                autohide
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                }}
-            >
-                <Toast.Header>
-                    <img
-                        src="holder.js/20x20?text=%20"
-                        className="rounded mr-2"
-                        alt=""
-                    />
-                    <strong className="mr-auto">CCIAdmin </strong>
-                    {/* <small>11 mins ago</small> */}
-                </Toast.Header>
-                <Toast.Body>{mensaje}!</Toast.Body>
-            </Toast>           
-        </div>
     )
 }
 
@@ -74,7 +68,14 @@ function FormularioTurno() {
     }
     console.log(formData)
     return (
-        <>             
+        <div
+            aria-live="polite"
+            aria-atomic="true"
+            style={{
+                position: 'relative',
+                minHeight: '100px',
+            }}
+        >              
             <Cartelito mensaje={'La Persona se ha Agregado Correctamente.'} show={show} setShow={setShow}/>
             <section className="seccion-crearreunion">
                 <div className="container col-5 border border-warning rounded p-3" >
@@ -166,7 +167,7 @@ function FormularioTurno() {
                     </Form>
                 </div>
             </section>
-        </>
+        </div>
     )
 }
 const estadoInicialFormulario = {

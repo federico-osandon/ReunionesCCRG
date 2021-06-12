@@ -8,7 +8,7 @@ function ReunionCard({reunion}) {
         <div className="col-sm-6 col-md-4">
             <div 
                 className="card mt-5 shadow-lg" 
-                style={{marginLeft:'2.5%', width: '95%', borderRadius: '25px 25px 0 0'}}
+                style={{marginLeft:'2.5%', width: '95%', borderRadius: '25px 25px 25px 25px'}}
             >
                 <Link 
                     to={`/reunion/${reunion.id}`} 
@@ -36,7 +36,7 @@ function ReunionCard({reunion}) {
                     <div 
                         className="card-footer" 
                         // {reunion.cantidadPersonas<1 && ' No Hay Lugar'}
-                        style={{backgroundColor: reunion.cantidadPersonas<1 ? 'red':'black', borderRadius: '0 0 25px 25px'}}
+                        style={{backgroundColor: reunion.cantidadPersonas<1 ? 'red':'green', borderRadius: '0 0 25px 25px'}}
                     >
                         <div className="row">
                             <p className="text-center col" style={{color:'white'}}>Ir a la Renión </p>

@@ -51,7 +51,7 @@ function ListadoTurnos({setCambioAsiste,listadoPersonas, cambioAsiste, estadoReu
                     <div>
                         
                                 
-                                <Table striped bordered hover variant="dark">
+                                <Table className="table-responsive" striped bordered hover variant="dark">
                                 <thead>
                                     <tr>
                                         <th>#</th>
