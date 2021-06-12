@@ -5,13 +5,12 @@ import 'firebase/auth'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCGBCtNuTXRbsQpLRYGxZRsvUW_hu6odF4",
-    authDomain: "cciadmin-cbdfb.firebaseapp.com",
-    databaseURL: "https://cciadmin-cbdfb.firebaseio.com",
-    projectId: "cciadmin-cbdfb",
-    storageBucket: "cciadmin-cbdfb.appspot.com",
-    messagingSenderId: "587876963260",
-    appId: "1:587876963260:web:1f02407c052f2216e891b9"
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGE_SENDER_ID,
+    appId: process.env.REACT_APP_ID
 };
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
