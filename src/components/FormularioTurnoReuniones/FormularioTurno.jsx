@@ -57,9 +57,12 @@ function FormularioTurno() {
     const handlerSubmit = (e) =>{
         e.preventDefault()
         setLoading(false)
-        console.log('enviar')
+        let fechaGardar = new Date(formData.fecha)
+        //fechaGardar.setHours(9) 
+        fechaGardar.setMinutes(fechaGardar.getMinutes() + fechaGardar.getTimezoneOffset())
+        //console.log(fechaGardar)
         const db= getFirestore()
-        db.collection('reuniones').add({...formData, cantidadPersonas: parseInt(formData.cantidadPersonas), fecha: firebase.firestore.Timestamp.fromDate(new Date(formData.fecha))})
+        db.collection('reuniones').add({...formData, cantidadPersonas: parseInt(formData.cantidadPersonas), fecha: firebase.firestore.Timestamp.fromDate(fechaGardar)})
         .then(res=> {
             setFormData(estadoInicialFormulario)
             setLoading(true)
@@ -76,8 +79,8 @@ function FormularioTurno() {
                 minHeight: '100px',
             }}
         >              
-            <Cartelito mensaje={'La Persona se ha Agregado Correctamente.'} show={show} setShow={setShow}/>
-            <section className="seccion-crearreunion">
+            <Cartelito mensaje={'La Reunión se ha Agregado Correctamente.'} show={show} setShow={setShow}/>
+            <section className="seccion-crearreunion mt-5 mb-5">
                 <div className="container col-5 border border-warning rounded p-3" >
                     <h2 className="text-center">CREAR REUNIÓN</h2>
                     <Form onChange={handlerChange} onSubmit={handlerSubmit} >
@@ -173,8 +176,8 @@ function FormularioTurno() {
 const estadoInicialFormulario = {
     nombre: '',
     dia: '',
-    fecha: '',
-    hora: '',
+    fecha: null,
+    hora: null,
     cantidadPersonas: 0
 }
 

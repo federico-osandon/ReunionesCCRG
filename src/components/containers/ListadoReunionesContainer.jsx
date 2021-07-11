@@ -3,6 +3,7 @@ import { getFirestore } from '../../Firebase/firebaseConfig'
 import firebase from 'firebase/app'
 import ListadoReuniones from '../ListadoReuniones/ListadoReuniones'
 import { promesaReuniones } from '../../utils/mockReuniones'
+import './ReunionDetalleContainer'
 
 function ListadoReunionesContainer() {
     const [reunionesList, setReunionesList] = useState([])
@@ -12,7 +13,7 @@ function ListadoReunionesContainer() {
     
 
     useEffect(() => {         
-        db.collection('reuniones').where('fecha', '>=', fechaHoy).get()//where('fecha', '>=', `${fechaHoy}`)
+        db.collection('reuniones').orderBy("fecha", "desc").get()//where('fecha', '>=', `${fechaHoy}`)
         .then(reu => { //console.log(reu);
             setReunionesList(reu.docs.map(reunion => ({...reunion.data(), id: reunion.id, fecha: reunion.data().fecha.toDate().toISOString()}))) 
             setLoading(false)
@@ -26,9 +27,14 @@ function ListadoReunionesContainer() {
     console.log(reunionesList);
     return (
         <>
-            {loading? <h1>cargando</h1>:
-
-                <ListadoReuniones listadoReuniones={reunionesList}/>
+            {loading 
+                ? 
+                    <div class="d-flex align-items-center justify-content-center w-100">
+                        <strong>Loading... </strong>
+                        <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                    </div>
+                :
+                    <ListadoReuniones listadoReuniones={reunionesList}/>
             }
         </>
     )

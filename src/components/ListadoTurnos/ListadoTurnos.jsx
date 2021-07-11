@@ -1,10 +1,16 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useRef} from 'react'
+import { useReactToPrint } from "react-to-print";
 import { useParams } from 'react-router-dom'
+import { getFirestore } from '../../Firebase/firebaseConfig'
 import Table from 'react-bootstrap/Table'
 import Spinner from 'react-bootstrap/Spinner'
 import Button from 'react-bootstrap/Button'
-import { getFirestore } from '../../Firebase/firebaseConfig'
+
 import './ListadoTurnos.css'
+
+
+
+
 
 function ListadoTurnos({setCambioAsiste,listadoPersonas, cambioAsiste, estadoReunion,setEstadoReunion}) {
     //const [listadoPersonas, setListadoPersonas] = useState([])
@@ -13,6 +19,12 @@ function ListadoTurnos({setCambioAsiste,listadoPersonas, cambioAsiste, estadoReu
     const {idreunion} = useParams()
     
     const db = getFirestore() 
+    //ESto es parte del componente para el pdf
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current
+    })
+    
     
     const handlerAsiste = async (personaId, asiste) => {
         //console.log('dando de baja', personaId)
@@ -38,51 +50,52 @@ function ListadoTurnos({setCambioAsiste,listadoPersonas, cambioAsiste, estadoReu
         
     }
 
-    return (
-        
+    return (        
             <section className="seccion-listadoturnos">
             <div className="container">
-
-                <h2 className="text-center mb-5">Esta sección es del listado de personas</h2>
+                <h2 className="text-center mb-5"></h2>
                 {listadoPersonas.length===0 
                 ? 
                     <h1 className="text-center" >No hay personas anotadas para esta reunión...</h1>                         
-                :    
-                    <div>
-                        
-                                
-                                <Table className="table-responsive" striped bordered hover variant="dark">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Nombre y Apellido</th>
-                                        <th>Email</th>
-                                        <th>Teléfono</th>
-                                        <th>Asiste?</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {listadoPersonas.map((persona,idx)=>(
-                                        <tr key={persona.id}>
-                                            <td>{idx+1 }</td>
-                                            <td>{persona.nombre}</td>
-                                            <td>{persona.email}</td>
-                                            <td>{persona.tel}</td>
-                                            <td>
-                                                {loadingSubmit ?
-                                                    <div className="text-center">
-                                                        <Button variant="primary" disabled>
-                                                            <Spinner
-                                                            as="span"
-                                                            animation="grow"
-                                                            size="sm"
-                                                            role="status"
-                                                            aria-hidden="true"
-                                                            />
-                                                            Loading...
-                                                        </Button>
-                                                    </div>
-                                                :
+                :   
+                    <>                                         
+                        <Table 
+                            className="table-responsive shadow-lg rounded" 
+                            striped bordered hover variant="light"
+                            ref={componentRef}
+                        >
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre y Apellido</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Asiste?</th>
+                                    <th>Asintencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {listadoPersonas.map((persona,idx)=>(
+                                    <tr key={persona.id}>
+                                        <td>{idx+1 }</td>
+                                        <td>{persona.nombre}</td>
+                                        <td>{persona.email}</td>
+                                        <td>{persona.tel}</td>
+                                        <td>
+                                            {loadingSubmit ?
+                                                <div className="text-center">
+                                                    <Button variant="primary" disabled>
+                                                        <Spinner
+                                                        as="span"
+                                                        animation="grow"
+                                                        size="sm"
+                                                        role="status"
+                                                        aria-hidden="true"
+                                                        />
+                                                        Loading...
+                                                    </Button>
+                                                </div>
+                                            :
                                                 <button 
                                                     onClick={ () => handlerAsiste(persona.id, persona.asiste) }
                                                     htmlFor="" 
@@ -93,16 +106,17 @@ function ListadoTurnos({setCambioAsiste,listadoPersonas, cambioAsiste, estadoReu
                                                 >
                                                     {persona.asiste===2 ? 'SI': 'No'}
                                                 </button>
-                                                }
-                                            </td>
-                                        </tr>
-                                    ))}
-                                                            
-                                </tbody>
-                            </Table> 
-                       
-                    </div>
-                 }               
+                                            }
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                ))}
+                                                        
+                            </tbody>
+                        </Table>                    
+                        <button className="btn btn-success btn-block" onClick={handlePrint}>DESCARGAR</button>
+                    </>
+                }               
             </div>
         </section>
             

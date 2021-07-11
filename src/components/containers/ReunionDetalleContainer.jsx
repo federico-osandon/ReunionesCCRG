@@ -14,9 +14,7 @@ function ReunionDetalleContainer() {
     //const [loadingSubmit, setLoadingSubmit] = useState(true)
     const [cambioAsiste, setCambioAsiste] = useState(false)
     const {idreunion} = useParams()
-    const db = getFirestore()
-
-    
+    const db = getFirestore()    
 
     useEffect(() => {        
         db.collection('reuniones').doc(idreunion).get()
@@ -50,7 +48,7 @@ function ReunionDetalleContainer() {
                         cambioAsiste={cambioAsiste}
                         setEstadoReunion={setEstadoReunion}
                         setCambioAsiste={setCambioAsiste}
-                    />                    
+                    />  
                 </div>
                 :
                 <div className="text-center">
