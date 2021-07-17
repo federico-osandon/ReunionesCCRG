@@ -8,16 +8,23 @@
   .container {
     /* flex: 0 0 41.666667%; */
     max-width: 60%;
-    margin-top: 10%;
+    margin-top: 18%;
   }
   .mt-5, .my-5 {
-    margin-top: 1!important;
+    margin-top: 0!important;
 }
   @media (max-width: 731px){
     .container {
       /* flex: 0 0 41.666667%; */
       max-width: 95%;
       flex: auto;
+      margin-top: 15%;
     }
     
   }
+  
+  @media (max-width: 450px){
+    .container {
+      margin-top: 20%;
+    }
+}

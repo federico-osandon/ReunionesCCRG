@@ -1,5 +1,5 @@
 .col-card{
-    margin-top: 6%;
+    margin-top: 12%;
 }
 label{
     width: 100%;
@@ -14,3 +14,18 @@ label{
     border-radius: 25px 25px 0 0;
 }
 
+@media (max-width: 741px){
+    .col-card{
+        margin-top: 15%;
+    }
+}
+@media (max-width: 550px){
+    .col-card{
+        margin-top: 15%;
+    }
+}
+@media (max-width: 550px){
+    .col-card{
+        margin-top: 25%;
+    }
+}
