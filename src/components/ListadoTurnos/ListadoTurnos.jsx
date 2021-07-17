@@ -1,4 +1,5 @@
 import React, {useState, useRef} from 'react'
+import {Link} from 'react-router-dom'
 import { useReactToPrint } from "react-to-print";
 import { useParams } from 'react-router-dom'
 import { getFirestore } from '../../Firebase/firebaseConfig'
@@ -36,15 +37,18 @@ function ListadoTurnos({setCambioAsiste,listadoPersonas, cambioAsiste, estadoReu
             setEstadoReunion({...reu.data(), id: idreunion, fecha: reu.data().fecha.toDate().toISOString()})                
             
         })     
-        if (asiste===1 && estadoReunion.cantidadPersonas>0) {           
+        if (asiste===1) {           
             await docRefPersona.update({ asiste: 2, })             
-            await docRefReunion.update({ cantidadPersonas: estadoReunion.cantidadPersonas - 1})  
+            await docRefReunion.update({ cantPerRegis: estadoReunion.cantPerRegis - 1})  
             .then(res=>setLoadingSubmit(false)  )        
-        }else if(estadoReunion.cantidadPersonas<50){
+        }else if(estadoReunion.cantidadPersonas - estadoReunion.cantPerRegis > 0){
             await docRefPersona.update({ asiste: 1 })  
-            await docRefReunion.update({ cantidadPersonas: estadoReunion.cantidadPersonas + 1 })
+            await docRefReunion.update({ cantPerRegis: estadoReunion.cantPerRegis + 1 })
             .then(res=>setLoadingSubmit(false)  ) 
              
+        }else{
+            alert('no hay mas lugar')
+            setLoadingSubmit(false)
         }
         setCambioAsiste(!cambioAsiste) 
         
@@ -70,8 +74,9 @@ function ListadoTurnos({setCambioAsiste,listadoPersonas, cambioAsiste, estadoReu
                                     <th>Nombre y Apellido</th>
                                     <th>Email</th>
                                     <th>Teléfono</th>
-                                    <th>Asiste?</th>
-                                    <th>Asintencia</th>
+                                    
+                                    <th>ACCIÓN</th>
+                                    <th>Asistencia</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,22 +104,31 @@ function ListadoTurnos({setCambioAsiste,listadoPersonas, cambioAsiste, estadoReu
                                                 <button 
                                                     onClick={ () => handlerAsiste(persona.id, persona.asiste) }
                                                     htmlFor="" 
-                                                    className = {persona.asiste === 2 
-                                                                    ? 'btn btn-success btn-block'
-                                                                    : 'btn btn-danger btn-block'
+                                                    className = {persona.asiste === 1
+                                                                    ? 'btn btn-danger btn-block'
+                                                                    : 'btn btn-success btn-block'
                                                                 }
                                                 >
-                                                    {persona.asiste===2 ? 'SI': 'No'}
+                                                    {persona.asiste===1 ? 'BAJA': 'ALTA'}
                                                 </button>
                                             }
                                         </td>
-                                        <td></td>
+                                       <td>
+                                       <button                                            
+                                            className = { 'btn btn-danger btn-block'}
+                                        >
+                                            No
+                                        </button>
+                                       </td>
                                     </tr>
                                 ))}
                                                         
                             </tbody>
                         </Table>                    
                         <button className="btn btn-success btn-block" onClick={handlePrint}>DESCARGAR</button>
+                        <Link to='/'>
+                            <button className="btn btn-primary btn-block mt-3">VOLVER</button>                        
+                        </Link>
                     </>
                 }               
             </div>

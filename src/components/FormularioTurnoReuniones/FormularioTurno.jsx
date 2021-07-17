@@ -62,7 +62,11 @@ function FormularioTurno() {
         fechaGardar.setMinutes(fechaGardar.getMinutes() + fechaGardar.getTimezoneOffset())
         //console.log(fechaGardar)
         const db= getFirestore()
-        db.collection('reuniones').add({...formData, cantidadPersonas: parseInt(formData.cantidadPersonas), fecha: firebase.firestore.Timestamp.fromDate(fechaGardar)})
+        db.collection('reuniones').add({
+            ...formData, 
+            cantidadPersonas: parseInt(formData.cantidadPersonas), 
+            fecha: firebase.firestore.Timestamp.fromDate(fechaGardar)
+        })
         .then(res=> {
             setFormData(estadoInicialFormulario)
             setLoading(true)
@@ -153,7 +157,7 @@ function FormularioTurno() {
                         </Form.Group>
                         {loading ? 
                             <Button className="btn btn-block" variant="success" type="submit">
-                                Submit
+                                ENVIAR
                             </Button>
                             : 
                             <Button variant="primary" disabled block > 
@@ -178,7 +182,8 @@ const estadoInicialFormulario = {
     dia: '',
     fecha: null,
     hora: null,
-    cantidadPersonas: 0
+    cantidadPersonas: 0,
+    cantPerRegis:0
 }
 
 export default FormularioTurno

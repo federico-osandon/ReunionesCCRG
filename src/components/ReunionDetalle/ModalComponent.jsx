@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
+import { getFirestore } from '../../Firebase/firebaseConfig'
+import firebase from 'firebase/app'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 
-function ModalComponent({reunion={}}) {
+function ModalComponent({reunion={}, actualizar, boolActu}) {
     console.log(reunion)
     const [value, setValue] = useState(reunion)
     const [show, setShow] = useState(false);
@@ -11,7 +13,7 @@ function ModalComponent({reunion={}}) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    console.log(value);
+    //console.log(value);
     const handleChange =(e)=>{
         return(
             setValue({
@@ -19,6 +21,21 @@ function ModalComponent({reunion={}}) {
                 [e.target.name]: e.target.value
             })
         )
+    }
+
+    const handlerSubmit = (e) =>{
+        e.preventDefault()
+        let fechaGardar = new Date(value.fecha)
+        //fechaGardar.setHours(9) 
+        fechaGardar.setMinutes(fechaGardar.getMinutes() + fechaGardar.getTimezoneOffset())
+        const db= getFirestore()
+        db.collection('reuniones').doc(reunion.id).update({
+            ...value,
+            fecha: firebase.firestore.Timestamp.fromDate(fechaGardar)
+        })
+        actualizar(!boolActu)
+        handleClose()
+
     }
 
     return (
@@ -41,8 +58,8 @@ function ModalComponent({reunion={}}) {
                     <div className="border border-warning p-3 rounded">
 
                         <Form 
-                            // onChange={} 
-                            // onSubmit={} 
+                            onChange={handleChange}
+                            //onSubmit={handlerSubmit} 
                         >
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Nombre de la Reunión</Form.Label>
@@ -51,8 +68,8 @@ function ModalComponent({reunion={}}) {
                                     type="text" 
                                     placeholder="Ingrese el Nombre de la Reunion" 
                                     size="sm" 
-                                    value={value.nombre}
-                                    onChange={handleChange}
+                                    defaultValue={value.nombre}
+                                    
                                 />
                                 <Form.Text className="text-muted">
                                 Nombre de la reunion.
@@ -66,7 +83,7 @@ function ModalComponent({reunion={}}) {
                                     type="text" 
                                     size="sm" 
                                     placeholder="Ingrese el Dia de la Reunion"
-                                    value={value.dia} 
+                                    defaultValue={value.dia} 
                                 />
                                 <Form.Text className="text-muted">
                                 Día de la reunión.
@@ -91,7 +108,7 @@ function ModalComponent({reunion={}}) {
                                     type="text" 
                                     size="sm" 
                                     placeholder="Ingrese la hora de la Reunion"
-                                    value={value.hora} 
+                                    defaultValue={value.hora} 
                                 />
                                 <Form.Text className="text-muted">
                                 Hora de la reunión.
@@ -106,7 +123,7 @@ function ModalComponent({reunion={}}) {
                                     placeholder="Ingrese el núm. de personas" 
                                     min={1} 
                                     max={50} 
-                                    value={value.cantidadPersonas}
+                                    defaultValue={value.cantidadPersonas}
                                 />
                                 <Form.Text className="text-muted">
                                 En la cantidad de personas no estan incluidas el staff.
@@ -135,8 +152,13 @@ function ModalComponent({reunion={}}) {
                     <Button variant="secondary" onClick={handleClose}>
                     CERRAR
                     </Button>
-                    <Button variant="warning" onClick={handleClose}>
-                    GUARDAR CAMBIOS
+                    <Button 
+                        variant="warning" 
+                        type="submit"
+                        onClick={handlerSubmit}
+                        //onClick={handleClose}
+                    >
+                        GUARDAR CAMBIOS
                     </Button>
                 </Modal.Footer>
             </Modal>

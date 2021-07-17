@@ -18,7 +18,9 @@ function Menu() {
                 variant="dark"
                 //style={{ color:'white' }}
             >
-                <img src="/assets/img/LogoeEdm.png" style={{width: '45px'}} />
+                <a href="https://amazing-pasteur-d05027.netlify.app/">
+                    <img src="/assets/img/LogoeEdm.png" style={{width: '45px'}} />
+                </a>
                 <Navbar.Brand href="#home"></Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -40,7 +42,7 @@ function Menu() {
                             >
                                 Crear Runión
                             </NavLink>  
-                        </Nav.Link>
+                        </Nav.Link>                                               
                         {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>

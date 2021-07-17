@@ -1,106 +1,94 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-// import AlertaContext from '../../context/alertas/alertaContext';
-// import AuthContext from '../../context/autenticacion/authContext';
-import './Login.css'
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const Login = (props) => {
+function Login() {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [passwordError, setpasswordError] = useState("");
+  const [emailError, setemailError] = useState("");
 
-    // extraer los valores del context
-    // const alertaContext = useContext(AlertaContext);
-    // const { alerta, mostrarAlerta } = alertaContext;
+  const handleValidation = (event) => {
+    let formIsValid = true;
 
-    // const authContext = useContext(AuthContext);
-    // const { mensaje, autenticado, iniciarSesion } = authContext;
-
-      // En caso de que el password o usuario no exista
-    //   useEffect(() => {
-    //     if(autenticado) {
-    //         props.history.push('/proyectos');
-    //     }
-
-    //     if(mensaje) {
-    //         mostrarAlerta(mensaje.msg, mensaje.categoria);
-    //     }
-    //     // eslint-disable-next-line
-    // }, [mensaje, autenticado, props.history]);
-
-    // State para iniciar sesión
-    const [usuario, guardarUsuario] = useState({
-        email: '',
-        password: ''
-    });
-
-    // extraer de usuario
-    const { email, password } = usuario;
-
-    const onChange = e => {
-        guardarUsuario({
-            ...usuario,
-            [e.target.name] : e.target.value
-        })
+    if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
+      formIsValid = false;
+      setemailError("Email Not Valid");
+      return false;
+    } else {
+      setemailError("");
+      formIsValid = true;
     }
 
-    // Cuando el usuario quiere iniciar sesión
-    const onSubmit = e => {
-        e.preventDefault();
-
-        // Validar que no haya campos vacios
-        if(email.trim() === '' || password.trim() === '') {
-            //mostrarAlerta('Todos los campos son obligatorios', 'alerta-error');
-        }
-
-        // Pasarlo al action
-        //iniciarSesion({ email, password });
+    if (!password.match(/^[a-zA-Z]{8,22}$/)) {
+      formIsValid = false;
+      setpasswordError(
+        "Only Letters and length must best min 8 Chracters and Max 22 Chracters"
+      );
+      return false;
+    } else {
+      setpasswordError("");
+      formIsValid = true;
     }
 
+    return formIsValid;
+  };
 
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    handleValidation();
+  };
 
-    return ( 
-        <div className="form-usuario">
-            {/* { alerta ? ( <div className={`alerta ${alerta.categoria}`}> {alerta.msg} </div> )  : null } */}
-
-            <div className="contenedor-form sombra-dark">
-                <h1>Iniciar Sesión</h1>
-
-                <form
-                    onSubmit={onSubmit}
-                >
-                    <div className="campo-form">
-                        <label htmlFor="email">Email</label>
-                        <input 
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Tu Email"
-                            value={email}
-                            onChange={onChange}
-                        />
-                    </div>
-
-                    <div className="campo-form">
-                        <label htmlFor="password">Password</label>
-                        <input 
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Tu Password"
-                            value={password}
-                            onChange={onChange}
-                        />
-                    </div>
-
-                    <div className="campo-form">
-                        <input type="submit" className="btn btn-primario btn-block" value="Iniciar Sesión" />
-                    </div>
-                </form>
-
-                <Link to={'/nueva-cuenta'} className="enlace-cuenta">
-                    Obtener Cuenta
-                </Link>
-            </div>
+  return (
+    <div className="App">
+      <div className="container">
+        <div className="row d-flex justify-content-center">
+          <div className="col-md-4">
+            <form id="loginform" onSubmit={loginSubmit}>
+              <div className="form-group">
+                <label>Email address</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="EmailInput"
+                  name="EmailInput"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter email"
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+                <small id="emailHelp" className="text-danger form-text">
+                  {emailError}
+                </small>
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="exampleInputPassword1"
+                  placeholder="Password"
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+                <small id="passworderror" className="text-danger form-text">
+                  {passwordError}
+                </small>
+              </div>
+              <div className="form-group form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="exampleCheck1"
+                />
+                <label className="form-check-label">Check me out</label>
+              </div>
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </form>
+          </div>
+          Source: <a href="https://askavy.com/react-form/">React Form</a>
         </div>
-     );
+      </div>
+    </div>
+  );
 }
- 
 export default Login;

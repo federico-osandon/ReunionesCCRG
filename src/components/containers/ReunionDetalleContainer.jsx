@@ -36,7 +36,11 @@ function ReunionDetalleContainer() {
             {!loading ?     
                 <div>
                                       
-                    <ReunionDetalle reunion={estadoReunion}/>  
+                    <ReunionDetalle 
+                        reunion={estadoReunion}
+                        boolActu={cambioAsiste}
+                        actualizar={setCambioAsiste}
+                    />  
                                 
                     <ListadoTurnos 
                         listadoPersonas={listadoPersonas} 

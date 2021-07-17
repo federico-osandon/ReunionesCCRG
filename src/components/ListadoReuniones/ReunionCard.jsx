@@ -36,11 +36,11 @@ function ReunionCard({reunion}) {
                     <div 
                         className="card-footer" 
                         // {reunion.cantidadPersonas<1 && ' No Hay Lugar'}
-                        style={{backgroundColor: reunion.cantidadPersonas<1 ? 'red':'green', borderRadius: '0 0 25px 25px'}}
+                        style={{backgroundColor: reunion.cantidadPersonas - reunion.cantPerRegis < 1 ? 'red':'green', borderRadius: '0 0 25px 25px'}}
                     >
                         <div className="row">
                             <p className="text-center col" style={{color:'white'}}>Ir a la Renión </p>
-                            <p className="text-center col" style={{color:'white'}}>Lugares: {reunion.cantidadPersonas} </p>
+                            <p className="text-center col" style={{color:'white'}}>Lugares: {reunion.cantidadPersonas - reunion.cantPerRegis} </p>
                         </div>                       
                     </div>
                 </Link>
